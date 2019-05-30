@@ -1,5 +1,5 @@
 import paramiko
-from myAutoSsh_conf import mySshVars
+from myVarConf import mySshVars
 
 if __name__ == "__main__":
     s = paramiko.SSHClient()
