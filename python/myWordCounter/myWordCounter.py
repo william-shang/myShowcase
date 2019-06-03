@@ -11,5 +11,6 @@ def wordcount(thearticle):
 def charcount(thearticle):
     count = len(thearticle)
     return count
+print(article)    
 print("word count="+str(wordcount(article)))
 print("char count="+str(charcount(article)))
