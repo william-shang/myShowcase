@@ -1,0 +1,6 @@
+---
+haproxy_backend_servers:
+  - name: webserver1.test
+    address: 10.101.0.3:80
+  - name: webserver2.test
+    address: 10.101.0.4:80

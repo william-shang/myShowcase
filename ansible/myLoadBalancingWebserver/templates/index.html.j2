@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Hello world.</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <style>body {font: normal 18px Arial; margin: 4em;}</style>
+</head>
+<body>
+  <h2>
+    Hello world.
+  </h2>
+  <p>
+    IP address on private network: {{ ansible_eth1.ipv4.address }}<br />
+    DNS server for the webserver: {{ ansible_dns.nameservers }}<br />
+    Kernel version: {{ ansible_kernel }}<br />
+    Timestamp showing when Ansible was last run on {{ ansible_date_time.date }}, at {{ ansible_date_time.time }}<br />
+  </p>
+</body>
+</html>

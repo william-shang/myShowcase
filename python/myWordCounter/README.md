@@ -9,3 +9,5 @@ Thank you for using GitHub! We're happy you're here. Please read this Terms of S
 word count=63
 char count=373
 ```
+## Author
+* **William SHANG** | *Email: wshang1989@gmail.com*

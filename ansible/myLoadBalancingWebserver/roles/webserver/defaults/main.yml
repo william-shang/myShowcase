@@ -1,0 +1,4 @@
+---
+webserver_index_file: index.html
+webserver_package: nginx
+webserver_service_state: started

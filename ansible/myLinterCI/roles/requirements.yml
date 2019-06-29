@@ -1,0 +1,6 @@
+---
+# Installs your forked Ansible role.
+# - src: https://github.com/william-shang/ansible-role-nginx-draft.git
+- src: git@github.com:william-shang/ansible-role-nginx-draft.git
+  scm: git
+  #name: my_linter_proj_role

@@ -12,3 +12,5 @@ this python script searchs hard drives on shoping webpages such as memoryexpress
  For sale at: $34.99
  Image at: https://media.memoryexpress.com/Images/Products/MX73729/0?Size=Default 
  ```
+ ## Author
+* **William SHANG** | *Email: wshang1989@gmail.com*

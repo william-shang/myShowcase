@@ -1,0 +1,43 @@
+---
+# We set hosts: localhost, and connection: local.
+# This is because there are no remote servers being configured
+# instead Ansible is interacting with AWS API to provision EC2 resources.
+- hosts: localhost
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: import ssh key
+      ec2_key:
+        name: "{{ aws_ec2_key_name }}"
+        key_material: "{{
+          lookup('file',
+          lookup('env','HOME') + '/.ssh/id_rsa.pub')
+        }}"
+        region: "{{ aws_region }}"
+        state: "{{ aws_ec2_resource_state }}"
+      tags: ssh
+    - name: create two EC2 instances
+      ec2:
+        # user_data parameter in the ec2 module, 
+        # use lookup() to load your files/cloud-init.yml on the remote EC2 servers
+        user_data: "{{lookup('file', 'files/cloud-init.yml')}}"
+        # attach your public SSH key
+        key_name: "{{ aws_ec2_key_name }}"
+        # Select the Amazon Linux 2 AMI (HVM), SSD Volume Type AMI
+        image: "{{ aws_ec2_ami }}"
+        # Select the t2.micro instance type
+        instance_type: "{{ aws_ec2_instance_type }}"
+        instance_tags:
+          myInstanceTag: myTag1
+        # Set the number of instances to 2
+        count: 2
+        count_tag:
+          myInstanceTag: myTag1
+        # Wait for the instance to reach its desired state before returning.
+        region: "{{ aws_region }}"
+        wait: true
+        vpc_subnet_id: "{{ aws_vpc_subnet_id }}"
+        assign_public_ip: true
+        group_id: "{{ mySG.group_id }}"
+      tags: ec2
+#user_data parameter in the ec2 module, and use lookup() to load your files/cloud-init.yml on the remote EC2 servers

@@ -1,0 +1,18 @@
+;zone file for s17.as.learn
+$TTL 10s				; 10 secs default TTL for zone
+s17.as.learn.	IN	SOA	rtr.s17.as.learn. htp.bcit.ca. (
+			3014022501	; serial number of Zone Record
+			1200s		; refresh time
+			180s		; update retry time on failure
+			1d		; expiration time 
+			3600		; cache time to live
+			)
+
+;Name servers for this domain
+s17.as.learn.	IN	NS	rtr.s17.as.learn.
+
+;addresses of hosts
+rtr.s17.as.learn.	IN	A	10.16.17.126
+mail.s17.as.learn.	IN	A	10.16.17.1
+wirtr.s17.as.learn.	IN	A	10.16.17.254
+s17.as.learn.		IN	MX  10	mail.s17.as.learn.

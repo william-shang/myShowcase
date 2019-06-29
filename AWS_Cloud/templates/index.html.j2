@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Hello world. WSHANG</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <style>body {font: normal 18px Arial; margin: 4em;}</style>
+</head>
+<body>
+  <h2>
+    Hello world.
+    WSHANG
+  </h2>
+  <p>
+    Network interface name for private IP: {{ ansible_default_ipv4['interface'] }}<br />
+    Private IP address: {{ ansible_default_ipv4['address'] }}<br />
+    Gateway: {{ ansible_default_ipv4['gateway'] }}<br />
+    MAC address for private IP interface: {{ ansible_default_ipv4['macaddress'] }}<br />
+    BIOS version: {{ ansible_bios_version }}<br />
+    Kernel version: {{ ansible_kernel }}<br />
+    Connected system user that is running Ansible:{{ ansible_user_id }}<br />
+
+  </p>
+</body>
+</html>

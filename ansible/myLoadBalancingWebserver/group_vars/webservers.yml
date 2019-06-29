@@ -1,0 +1,3 @@
+---
+webserver_index_file : "{{ playbook_dir }}/templates/index.html.j2"
+# nginx_index_file: templates/index.html.j2

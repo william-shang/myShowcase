@@ -1,0 +1,43 @@
+---
+- hosts: all
+  vars:
+    users: ['wshang', 'nsmeds']
+  tasks:
+    - name: add 2 users
+      become: true
+      user:
+        name: "{{ item }}"
+        state: present
+        groups: "wheel"
+      loop: "{{ users }}"   
+    # Use file module to secure your home directory (set to mode 0750).
+    - file:
+        path: ~/
+        mode: 0750
+      become: true
+    # Use authorized_key module to add your public SSH key to user's ~/.ssh/authorized_keys file.
+    - name: Set authorized key taken from pub files
+      authorized_key:
+        user: wshang
+        state: present
+        key: "{{ lookup('file', 'files/wshang.pub') }}"
+      become: true
+    - authorized_key:
+        user: nsmeds
+        state: present
+        key: "{{ lookup('file', 'files/nsmeds.pub') }}"
+      become: true
+    - lineinfile:
+        path: /etc/sudoers.d/wshang
+        create: yes
+        line: 'wshang ALL=(root) NOPASSWD:ALL'
+        mode: 0440
+        validate: '/usr/sbin/visudo -cf %s'
+      become: true
+    - lineinfile:
+        path: /etc/sudoers.d/nsmeds
+        create: yes
+        line: 'nsmeds ALL=(root) NOPASSWD:ALL'
+        mode: 0440
+        validate: '/usr/sbin/visudo -cf %s'
+      become: true

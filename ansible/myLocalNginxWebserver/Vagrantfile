@@ -1,0 +1,30 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+# We are defining a new variable `HOSTNAME`.
+HOSTNAME = "webserver.test"
+
+Vagrant.configure("2") do |config|
+  # Vagrant boxes allow anyone to package their environment into an image and
+  # share it with others. See https://app.vagrantup.com/boxes/search.
+  config.vm.box = "centos/7"
+
+  # There are a number of configurable machine settings. See
+  # https://www.vagrantup.com/docs/vagrantfile/machine_settings.html.
+  config.vm.hostname = HOSTNAME
+  config.vm.network "forwarded_port", guest: 22, host: 50022
+  config.vm.network "forwarded_port", guest: 80, host: 50080
+
+  # By default, Vagrant will share your project directory to `/vagrant` inside
+  # the virtual machine. See https://www.vagrantup.com/docs/synced-folders/.
+  config.vm.synced_folder ".", "/vagrant", disabled: true
+
+  # Vagrant supports a number of providers, one of which is VirtualBox. See
+  # https://www.vagrantup.com/docs/virtualbox/.
+  config.vm.provider "virtualbox" do |vb|
+    vb.name = HOSTNAME
+  end
+  config.vm.provision "ansible" do |ansible|
+    ansible.playbook = "site.yml"
+  end
+end

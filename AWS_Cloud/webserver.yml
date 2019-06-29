@@ -1,0 +1,48 @@
+---
+- hosts: all
+  tasks:
+    - name: install common tools
+      # Certain tasks, such as installing system packages, require root
+      # privileges. The following line allows you to 'become' another user, and
+      # the value 'true' is a special case representing privilege escalation to
+      # root.
+      become: true
+      package:
+        name: "{{ item }}"
+        state: latest
+      with_items:
+        - bind-utils
+        - net-tools
+        - vim
+        - wget
+    # Use yum module to upgrade all current packages.
+    - name: upgrade all packages
+      become: true
+      yum:
+        name: '*'
+        state: latest
+    - name: install epel-release
+      become: true
+      shell: sudo amazon-linux-extras install epel -y
+    - name: Install nginx package
+      become: true
+      shell: sudo amazon-linux-extras install nginx1.12 -y
+      #command: sudo amazon-linux-extras install nginx1.12
+    # Replace the copy module task with Ansible's template module.
+    # Override the default /usr/share/nginx/html/index.html index page with the templated file
+    - name: using template module
+      become: true
+      template:
+        src: templates/index.html.j2
+        dest: /usr/share/nginx/html/index.html
+        mode: 0644
+      #tags:
+      #  - template
+    # Use service module to start and enable nginx service.
+    # Start the nginx service
+    - name: start and enable nginx service
+      become: true
+      service:
+        name: nginx
+        state: started
+        enabled: yes

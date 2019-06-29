@@ -1,0 +1,36 @@
+---
+# Set `present` to create resources, and `absent` to delete.
+aws_ec2_resource_state: present
+#aws_ec2_resource_state: absent
+
+# Set Amazon Machine Image (AMI)
+# The below example is AMI for Amazon Linux 2 AMI (HVM), SSD Volume Type.
+aws_ec2_ami: ami-0c6b1d09930fac512
+
+# Set instance type for EC2 instances. Note that `t2.micro` is free tier.
+aws_ec2_instance_type: t2.micro
+
+# Create SSH keypair with the following name.
+aws_ec2_key_name: myNaspPcSsh
+
+# Set number of EC2 instances to be created. Using ternary filter,
+# automatically sets `0` when resource state is absent, and `2` when resource
+# state is present.
+aws_ec2_instance_count: "{{ (aws_ec2_resource_state == 'present') | ternary(2, 0) }}"
+
+# Set AWS region for resource creation.
+aws_region: us-east-1
+
+# Create security group with the following name.
+aws_security_group_name: ssh-and-ping
+
+# Set VPC ID for resource creation (replace with ID from your own account).
+aws_vpc_id: vpc-1ba93261
+
+# Set VPC subnet ID for resource creation (replace with ID from your own
+# account).
+aws_vpc_subnet_id: subnet-5aefa706
+
+# Set IP range to be whitelisted in security group (replace with your current
+# public IP address).
+aws_whitelist_cidr: 142.232.221.0/24

@@ -1,0 +1,13 @@
+---
+# Include the users.yml and webserver.yml playbooks.
+- import_playbook: users.yml
+# Install the geerlinguy.haproxy role on loadbalancers host group.
+- hosts: loadbalancers
+  become: true
+  roles:
+    - { role: geerlingguy.haproxy }
+    
+- hosts: webservers
+  become: true
+  roles:
+    - webserver

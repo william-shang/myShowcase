@@ -16,3 +16,5 @@ pip3 install paramiko
 
 * NOTE: If we didn't set up a SSH connection to the VM before, the server will not let it connect, have to manually ssh in to the VM first.
   * Type in “ssh nasp@142.232.221.115” then logout with “logout”;
+## Author
+* **William SHANG** | *Email: wshang1989@gmail.com*

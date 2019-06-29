@@ -43,3 +43,6 @@ b.) It switches your terminal to another virtual one
 c.) It prompts you to search through your past commands
 d.) These keys don't have any use within the bash prompt.
 ```
+
+## Author
+* **William SHANG** | *Email: wshang1989@gmail.com*

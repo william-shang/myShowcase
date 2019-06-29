@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Hello world.</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <style>body {font: normal 18px Arial; margin: 4em;}</style>
+</head>
+<body>
+  <h2>
+    Hello world.
+  </h2>
+  <p>
+    Interface: {{ ansible_default_ipv4['interface'] }}<br />
+    Private IP: {{ ansible_eth1.ipv4.address }}<br />
+    Gateway: {{ ansible_default_ipv4['gateway'] }}<br />
+  </p>
+</body>
+</html>

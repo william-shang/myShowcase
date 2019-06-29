@@ -1,0 +1,6 @@
+---
+# Playbook calls your forked Ansible role.
+- hosts: all
+  become: true
+  roles:
+    - ansible-role-nginx-draft

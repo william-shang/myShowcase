@@ -1,0 +1,11 @@
+# Use `requirements.txt` to define pip packages required for a project. This
+# example project only requires the Ansible software, but there are a number of
+# Ansible modules which require extra packages.
+#
+# One example is the route53 module, which requires the boto package. See
+# https://docs.ansible.com/ansible/latest/modules/route53_module.html.
+#
+# By defining all required packages, anyone can clone this project and easily
+# install all necessary packages with `pip install -r requirements.txt`.
+#
+ansible >= 2.7.0

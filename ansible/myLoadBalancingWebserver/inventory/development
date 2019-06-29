@@ -1,0 +1,6 @@
+[loadbalancers]
+loadbalancer1.test      ansible_host=10.101.0.2
+
+[webservers]
+webserver1.test         ansible_host=10.101.0.3
+webserver2.test         ansible_host=10.101.0.4

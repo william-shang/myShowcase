@@ -1,0 +1,50 @@
+---
+- name: install common tools
+  become: true
+  package:
+    name: "{{ item }}"
+    state: latest
+  with_items:
+    - bind-utils
+    - net-tools
+    - vim
+    - wget
+# Use yum module to upgrade all current packages.
+- name: upgrade all packages
+  become: true
+  yum:
+    name: '*'
+    state: latest
+# Use yum module to install epel-release.
+- name: yum module to install epel-release
+  become: true
+  yum:
+    name: "{{ packages }}"
+  vars:
+    packages:
+    - epel-release
+
+## Installs, starts, and enables nginx.
+# Use yum module to install nginx.
+  # Pin to version nginx-1.12.2-2.el7
+- name: install one specific version of nginx-1.12.2-2.el7
+  become: true
+  yum:
+    name: nginx-1.12.2-2.el7
+    state: present
+# Replace the copy module task with Ansible's template module.
+- name: using template module
+  become: true
+  template:
+    src: "{{ webserver_index_file }}"
+    dest: /usr/share/nginx/html/index.html
+    owner: nginx
+    group: nginx
+    mode: 0664
+# start and enable nginx service.
+- name: start and enable nginx service
+  become: true
+  service:
+    name: nginx
+    state: "{{ webserver_service_state }}"
+    enabled: yes

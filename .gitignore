@@ -1,0 +1,6 @@
+*/.vagrant/
+*/venv/
+*/roles/public/
+node_modules/
+.vscode/
+*/.vscode/

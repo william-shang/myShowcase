@@ -1,0 +1,79 @@
+---
+- hosts: localhost
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: create virtual private cloud
+      ec2_vpc_net:
+        # Name your VPC
+        name: myLabVPC
+        # Set IPv4 CIDR block 10.0.0.0/16
+        cidr_block: 10.0.0.0/16
+        # Ensure you are in the us-east-1 region
+        region: "{{ aws_region }}"
+        # Select Default tenancy
+        tenancy: default
+        state: "{{ aws_ec2_resource_state }}"
+      # ID can be accessed via "{{ myVpc.vpc.id }}""
+      register: myVpc
+      tags: vpcTag
+    - name: Create internet gateway
+      ec2_vpc_igw:
+        # Attach to your VPC
+        vpc_id: "{{ myVpc.vpc.id }}"
+        state: "{{ aws_ec2_resource_state }}"
+        region: "{{ aws_region }}"
+      # The Internet Gateway ID can be accessed via {{igw.gateway_id}}
+      register: igw
+      tags: igwTag
+    - name: Create subnet
+      ec2_vpc_subnet:
+        state: "{{ aws_ec2_resource_state }}"
+        # Name your subnet
+        # Attach to your VPC
+        vpc_id: "{{ myVpc.vpc.id }}"
+        # Select Availability Zone us-east-1a
+        az: us-east-1a
+        # Set IPv4 CIDR block 10.0.1.0/24
+        cidr: 10.0.1.0/24
+        # Enable auto-assign public IPv4 address
+        map_public: true
+        region: "{{ aws_region }}"
+      register: sn    # ID can be accessed via "{{ sn.subnet.id }}""
+      tags: snTag
+    - name: Create route table
+      ec2_vpc_route_table:
+        # Attach to your VPC
+        vpc_id: "{{ myVpc.vpc.id }}"
+        region: "{{ aws_region }}"
+        # Associate with your new subnet
+        subnets:
+          - "{{ sn.subnet.id }}"
+        # Add destination 0.0.0.0/0 and target your new internet gateway
+        routes:
+          - dest: 0.0.0.0/0
+            gateway_id: "{{ igw.gateway_id }}"
+      register: public_route_table
+      tags: rtTag
+    - name: create security group
+      # inbound access to ports 22, 80, and all ICMP traffic;
+      ec2_group:
+        name: "{{ aws_security_group_name }}"
+        description: "{{ aws_security_group_name }}"
+        vpc_id: "{{ aws_vpc_id }}"
+        region: "{{ aws_region }}"
+        rules:
+          - proto: tcp
+            ports: 22
+            cidr_ip: "{{ aws_whitelist_cidr }}"
+          - proto: tcp
+            ports:
+              - 80
+            cidr_ip: "{{ aws_whitelist_cidr }}"
+          - proto: icmp
+            from_port: 8
+            to_port: -1
+            cidr_ip: "{{ aws_whitelist_cidr }}"
+      tags: sg
+      # for Security group id "{{ mySG.group_id }}"
+      register: mySG

@@ -1,0 +1,31 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+# Create three CentOS 7 VMs on a private network.
+  # loadbalancer1.test set to   10.101.0.2
+  # webserver1.test set to      10.101.0.3
+  # webserver2.test set to      10.101.0.4
+nodes = [
+  { :hostname => 'loadbalancer1.test', :ip => '10.101.0.2' },
+  { :hostname => 'webserver1.test', :ip => '10.101.0.3' },
+  { :hostname => 'webserver2.test', :ip => '10.101.0.4' }
+]
+# Use Ansible provisioner to configure VMs only after last VM is up.
+Vagrant.configure("2") do |config|
+  config.vm.box = "centos/7"
+  config.vm.synced_folder ".", "/vagrant", disabled: true
+  # looping through the var `nodes`, deploying and provisioning each server.
+  nodes.each do |node|
+    config.vm.define node[:hostname] do |nodeconfig|
+      nodeconfig.vm.hostname = node[:hostname]
+      nodeconfig.vm.network "private_network", ip: node[:ip]
+      # Use Ansible provisioner to configure VMs only after last VM is up.
+      nodeconfig.vm.provision :ansible do |ansible|
+        # Runs site.yml playbook
+        ansible.playbook = "site.yml"
+        # Uses inventory/development inventory file
+        ansible.inventory_path = "inventory/development"
+      end
+    end
+  end
+end

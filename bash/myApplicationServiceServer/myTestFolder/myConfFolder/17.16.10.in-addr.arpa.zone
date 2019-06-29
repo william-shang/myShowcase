@@ -1,0 +1,18 @@
+; zone file for 10.16.255.17 / s17.as.learn reverse lookup
+$TTL 10s				; 10 secs default TTL for zone
+17.16.10.in-addr.arpa.	IN	SOA	rtr.s17.as.learn. htp.bcit.ca. (
+			3216030101	; serial number of Zone Record
+			1200s		; refresh time
+			180s		; retry time on failure
+			1d		; expiration time 
+			3600		; cache time to live
+			)
+
+;Name servers for this domain
+17.16.10.in-addr.arpa.		IN	NS	rtr.s17.as.learn.
+
+;IP to Hostname Pointers
+126.17.16.10.in-addr.arpa.	IN	PTR	rtr.s17.as.learn.
+1.17.16.10.in-addr.arpa.	IN	PTR	mail.s17.as.learn.
+100.17.16.10.in-addr.arpa.	IN	PTR	w10.s17.as.learn.
+254.17.16.10.in-addr.arpa.	IN	PTR	wirtr.s17.as learn.

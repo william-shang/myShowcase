@@ -1,0 +1,84 @@
+---
+- hosts: all
+  tasks:
+    - name: install common tools
+      # Certain tasks, such as installing system packages, require root
+      # privileges. The following line allows you to 'become' another user, and
+      # the value 'true' is a special case representing privilege escalation to
+      # root.
+      become: true
+      package:
+        name: "{{ item }}"
+        state: latest
+      with_items:
+        - bind-utils
+        - net-tools
+        - vim
+        - wget
+    - name: Add the user 'wshang' with a primary group of 'wheel' and Using shell '/bin/bash'
+      user:
+        name: wshang
+        shell: /bin/bash
+        group: wheel
+      become: true
+    # Use file module to secure your home directory (set to mode 0750).
+    - file:
+        path: /home/wshang/
+        mode: 0750
+      become: true
+    # Use authorized_key module to add your public SSH key to user's ~/.ssh/authorized_keys file.
+    - name: Set authorized key taken from host
+      become: true
+      authorized_key:
+        user: wshang
+        key: "{{ lookup('file', '/home/WSHANG/.ssh/id_rsa.pub') }}"
+    # Use lineinfile module to allow your user to perform passwordless sudo.
+      # Create file for your user in /etc/sudoers.d/ (e.g. /etc/sudoers.d/nsmeds)
+      # Example of file's content: nsmeds ALL=(root) NOPASSWD:ALL
+      # Set mode 0440
+      # Have Ansible validate your sudoers file with /usr/sbin/visudo -cf %s
+    - lineinfile:
+        path: /etc/sudoers.d/wshang
+        create: yes
+        line: 'wshang ALL=(root) NOPASSWD:ALL'
+        mode: 0440
+        validate: '/usr/sbin/visudo -cf %s'
+      become: true
+    # Use yum module to upgrade all current packages.
+    - name: upgrade all packages
+      become: true
+      yum:
+        name: '*'
+        state: latest
+    # Use yum module to install epel-release.
+    - name: yum module to install epel-release
+      become: true
+      yum:
+        name: "{{ packages }}"
+      vars:
+        packages:
+        - epel-release
+    # Use yum module to install nginx.
+      # Pin to version nginx-1.12.2-2.el7
+    - name: install one specific version of nginx-1.12.2-2.el7
+      become: true
+      yum:
+        name: nginx-1.12.2-2.el7
+        state: present
+    # Use copy module to replace the default /usr/share/nginx/html/index.html with a file containing your name.
+      # Your new index.html should be stored locally in Ansible's files/ directory
+      # Set mode 0644
+    - name: replace index.html
+      become: true
+      copy:
+        src: files/index_wshang.html
+        dest: /usr/share/nginx/html/index.html
+        mode: 0644
+    # Use service module to start and enable nginx service.
+    - name: start and enable nginx service
+      become: true
+      service:
+        name: nginx
+        state: started
+        enabled: yes
+

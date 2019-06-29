@@ -1,0 +1,21 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+HOSTNAME = "wshang.cm.nasp"
+Vagrant.configure("2") do |config|
+  # Creates a single CentOS 7 VM using VirtualBox.
+  config.vm.box = "centos/7"
+  config.vm.hostname = HOSTNAME
+  # Configure host port 50022 to forward to guest port 22
+  config.vm.network "forwarded_port", guest: 22, host: 50022
+  # Configure host port 50080 to forward to guest port 80
+  config.vm.network "forwarded_port", guest: 80, host: 50080
+  config.vm.synced_folder ".", "/vagrant", disabled: true
+  config.vm.provider "virtualbox" do |vb|
+    vb.name = HOSTNAME
+  end
+  # Provisions VM with Ansible using site.yml playbook.
+  config.vm.provision "ansible" do |ansible|
+    ansible.playbook = "site.yml"
+  end
+end
+
