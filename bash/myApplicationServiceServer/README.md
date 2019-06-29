@@ -5,7 +5,7 @@ This is a colection of bash scripts, that will automate installation of services
 ## Map of the Network
 Please find below, the network map made for this project:
 
-![Network Map](myImgFolder\myAppProjMap.jpg)
+![Network Map](myImgFolder/myAppProjMap.jpg)
 
 
 ## Prerequisites
