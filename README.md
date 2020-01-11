@@ -1,6 +1,6 @@
 # Welcome to My Github Showcase Repo
 Hi, my name is William SHANG. <br />
-I'm a enthusiastic IT professional currently seeking a Sys-admin Intern / co-op position. <br />
+I'm a enthusiastic IT professional currently seeking a Sys-admin position. <br />
 I'm near the completion of my training for Network Administration Security Professional (NASP) at BCIT. <br />
 This Github repo is created to showcase some of scripts I created for deploying the VMs/networks, and provisioning the virtual environments; <br />
 Enjoy ^_^ <br />
